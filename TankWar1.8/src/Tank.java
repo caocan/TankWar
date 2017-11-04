@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.*;
 
 public class Tank {
     public static final int XSPEED = 5;
@@ -22,10 +23,17 @@ public class Tank {
     //持有对象引用
     TankClient tc = null;
 
+    public boolean isGood() {
+        return good;
+    }
+
     //判断Tank的正反方
     private boolean good;
 
     int x, y;
+
+    //随机数产生器
+    private static Random r = new Random();
 
     private boolean bL = false;
     private boolean bU = false;
@@ -44,14 +52,17 @@ public class Tank {
     //初始炮筒方向向下
     private Direction ptDir = Direction.D;
 
+    private int step = r.nextInt(12) + 3;
+
     public Tank(int x, int y, boolean good) {
         this.x = x;
         this.y = y;
         this.good = good;
     }
 
-    public Tank(int x, int y, boolean good, TankClient tc){
+    public Tank(int x, int y, boolean good, Direction dir, TankClient tc){
         this(x, y, good);
+        this.dir = dir;
         this.tc = tc;
     }
 
@@ -133,14 +144,28 @@ public class Tank {
                 break;
         }
 
+        if(this.dir != Direction.STOP){
+            this.ptDir = dir;
+        }
+
         //禁止坦克出界
         if(x < 0) x = 0;
         if(y < 30) y = 30;
         if(x + Tank.WIDTH  > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.WIDTH;
         if(y + Tank.HEIGHT > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.HEIGHT;
 
-        if(this.dir != Direction.STOP){
-            this.ptDir = dir;
+        if(!good){
+            Direction[] dirs = Direction.values();
+            if(step == 0){
+                step = r.nextInt(12) + 3;
+                int rn = r.nextInt(dirs.length);
+                dir = dirs[rn];
+            }
+
+            step--;
+
+            if(r.nextInt(40) > 38)
+                this.fire();
         }
     }
 
@@ -201,9 +226,10 @@ public class Tank {
     }
 
     public Missile fire(){
+        if(!live)   return null;
         int x = this.x + Tank.WIDTH/2 - Missile.WIDTH/2;
         int y = this.y + Tank.HEIGHT/2 - Missile.WIDTH/2;
-        Missile m = new Missile(x, y, ptDir, this.tc);
+        Missile m = new Missile(x, y,good, ptDir, this.tc);
         tc.missiles.add(m);
         return m;
     }
