@@ -5,6 +5,12 @@ public class Tank {
     public static final int XSPEED = 5;
     public static final int YSPEED = 5;
 
+    public static final int WIDTH = 30;
+    public static final int HEIGHT = 30;
+
+    //持有对象引用
+    TankClient tc = null;
+
     int x, y;
 
     private boolean bL = false;
@@ -25,11 +31,16 @@ public class Tank {
         this.y = y;
     }
 
+    public Tank(int x, int y, TankClient tc){
+        this(x, y);
+        this.tc = tc;
+    }
+
     //重构绘画函数
     public void draw(Graphics g){
         Color c = g.getColor();
         g.setColor(Color.RED);
-        g.fillOval(x, y,30,30);
+        g.fillOval(x, y,WIDTH,HEIGHT);
         g.setColor(c);
 
         move();
@@ -74,6 +85,9 @@ public class Tank {
         int key = e.getKeyCode();
 
         switch (key){
+            case KeyEvent.VK_CONTROL:
+                tc.m = fire();
+                break;
             case KeyEvent.VK_LEFT :
                 bL = true;
                 break;
@@ -120,5 +134,12 @@ public class Tank {
                 break;
         }
         locateDirection();
+    }
+
+    public Missile fire(){
+        int x = this.x + Tank.WIDTH/2 - Missile.WIDTH/2;
+        int y = this.y + Tank.HEIGHT/2 - Missile.WIDTH/2;
+        Missile m = new Missile(x, y, dir);
+        return m;
     }
 }
