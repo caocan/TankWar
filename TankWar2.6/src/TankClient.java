@@ -6,9 +6,22 @@ import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.List;
 
+/**
+ * 这个类的作用是坦克游戏的主窗口
+ * @author korson
+ *
+ */
+
+
 public class TankClient extends Frame{
 
+    /**
+     * 整个坦克游戏的宽度
+     */
     public static final int GAME_WIDTH = 800;
+    /**
+     * 整个坦克的高度
+     */
     public static final int GAME_HEIGHT = 600;
 
     Tank myTank = new Tank(50, 50, true,Tank.Direction.STOP,this);
@@ -95,6 +108,9 @@ public class TankClient extends Frame{
         g.drawImage(offScreenImage, 0, 0, null);
     }
 
+    /**
+     * 本方法显示坦克主窗口
+     */
     public void lauchFrame(){
 
         for(int i = 0; i < 10; i++){

@@ -295,6 +295,11 @@ public class Tank {
         return new Rectangle(x, y, WIDTH, HEIGHT);
     }
 
+    /**
+     * 撞墙
+     * @param w 被撞的墙
+     * @return 撞上了返回true，否则false
+     */
     public boolean collidesWithWall(Wall w){
         if(this.live && this.getRect().intersects(w.getRect())){
             this.stay();
