@@ -327,7 +327,7 @@ public class Tank {
     }
 
     public Rectangle getRect(){
-        System.out.println(tankImages[0].getWidth(null));
+//        System.out.println(tankImages[0].getWidth(null));
         return new Rectangle(x, y, WIDTH, HEIGHT);
     }
 

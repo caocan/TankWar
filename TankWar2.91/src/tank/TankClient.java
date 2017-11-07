@@ -5,8 +5,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * 这个类的作用是坦克游戏的主窗口
@@ -54,7 +56,7 @@ public class TankClient extends Frame{
         g.drawString("我的生命值" + myTank.getLife(), 10, 110);
 
         if(tanks.size() <= 0){
-            for(int i = 0; i < 10; i++){
+            for(int i = 0; i < Integer.parseInt(PropertyMgr.getProperty("reProduceTankCount")); i++){
                 tanks.add(new Tank(50 + 40 *(i + 1), 50, false, Direction.D, this));
             }
         }
@@ -115,7 +117,11 @@ public class TankClient extends Frame{
      */
     public void lauchFrame(){
 
-        for(int i = 0; i < 10; i++){
+
+
+        int initTankCount = Integer.parseInt(PropertyMgr.getProperty("initTankCount"));
+
+        for(int i = 0; i < initTankCount; i++){
             tanks.add(new Tank(50 + 40 *(i + 1), 50, false, Direction.D, this));
         }
 
